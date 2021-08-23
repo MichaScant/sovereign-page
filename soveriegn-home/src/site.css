@@ -1,0 +1,48 @@
+.michael {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    height: 60vmin;
+    pointer-events: none;
+    top: 280px;
+    left: 180px;
+    transform: translate(-50%, -50%);
+}
+
+.intro {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    top: 120px;
+    font-size: 18px;
+    width: 50vmin;
+    font-weight: 500;
+}
+
+.title {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    font-size: 35px;
+    top: 20px;
+    font-weight: 600;
+}
+
+.gameLink {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    height: 50vmin;
+}

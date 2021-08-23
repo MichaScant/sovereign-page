@@ -1,0 +1,83 @@
+.square_green {
+    display: flex;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background-color: green;
+    outline-color: black;
+    outline-style: solid;  
+    outline-width: 1.5px;
+    color: white;
+    align-items: center;
+}
+
+.square_red {
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background-color: red;
+    outline-style: solid;  
+    outline-width: 1.5px;
+    color: white;
+    align-items: center;
+}
+
+.test {
+    display: flex;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background-color: red;
+    outline-color: black;
+    outline-style: solid;  
+    outline-width: 1.5px;
+    color: white;
+    align-items: center;
+}   
+
+.grid {
+    display: flex;
+    position: relative;
+    align-items: center;
+    margin: auto;
+    margin: 0px;
+    justify-content: center;
+}
+
+.drop {
+    display: flex;
+    width: 8%;
+    box-sizing: border-box;
+    padding: 20px;
+    justify-content: flex-start;
+}
+
+.back {
+    display: flex;
+    width: 100px;
+    height: 100px;
+    margin: auto;
+    position: relative;
+    align-items: center;
+}
+
+
+.button {
+    display: block; 
+    margin: auto;
+    width: 50px;
+    height: 50px;  
+    position: relative;
+    align-items: center;
+    margin: 0px
+}
+
+.row {
+    display: inline-flex;
+    position: relative;
+    align-items: center;
+    margin: auto;
+    margin: 0px
+}

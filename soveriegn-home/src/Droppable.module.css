@@ -1,0 +1,59 @@
+.Droppable {
+    display: flex;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background-color: green;
+    outline-color: black;
+    outline-style: solid;  
+    outline-width: 1.5px;
+    color: white;
+    align-items: center;
+}
+
+.Droppable_w {
+    display: flex;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    outline-color: black;
+    outline-style: solid;  
+    outline-width: 1.5px;
+    color: black;
+    align-items: center;
+}
+
+.drop {
+    display: flex;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background-color: green;
+    outline-color: black;
+    outline-style: solid;  
+    outline-width: 1.5px;
+    color: red;
+    align-items: center;
+}
+
+.over {
+    box-shadow: inset #1eb99d 0 0 0 3px, rgba(201, 211, 219, 0.5) 20px 14px 24px;
+}
+
+.dropped {
+box-shadow: inset rgba(201, 211, 219, 0.7) 0 0 0 3px,
+    rgba(201, 211, 219, 0.5) 20px 14px 24px;
+}
+
+.dragging {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 200px;
+    transform: translate3d(-50%, -50%, 0);
+    opacity: 0.8;
+    transition: opacity 300ms ease, transform 200ms ease;
+    user-select: none;
+    pointer-events: none;
+}
