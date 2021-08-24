@@ -22,6 +22,8 @@ interface Props {
   grid?: string[][];
 }
 
+var currentTile = -1;
+
 //var num_G = 0;
 //var num_B = 2;
 
@@ -77,9 +79,9 @@ function DragMain() {
 function buildGrid() {
   var grid: string[][] = [];
   var element = 1;
-  for (let y = 1; y < 11; y++) {
+  for (let y = 1; y < 9; y++) {
     grid[y] = [];
-    for (let x = 1; x < 11; x++) {
+    for (let x = 1; x < 9; x++) {
       grid[y][x] = String(element);
       element++;
     }
@@ -135,7 +137,6 @@ function DraggableItem2({handle}: DraggableProps) {
   );
 }
 
-
 export function GridGame({modifiers,}: Props) {
   var test : any;
     const grid = buildGrid();
@@ -146,8 +147,8 @@ export function GridGame({modifiers,}: Props) {
     const draggable2 = <DraggableItem2 />;
 
     const draggableCheckers : any[] = [];
-
-    for (var i = 0; i < 25; i++) {
+  
+    for (var i = 0; i < 12; i++) {
       const draggable = <DraggableItem identifier = {'draggable-item'+(draggableCheckers.length)}/>;
       draggableCheckers.push(draggable);
     }
@@ -176,10 +177,15 @@ export function GridGame({modifiers,}: Props) {
                      
                       if (((Number(tile)%2 == 0 && rowIndex%2 ==0) || (Number(tile)%2 != 0 && rowIndex%2 !=0))) {
                         counter++;
+
+                        if (parents[counter] === null && tile < 24){
+                          parents[counter] = tile;
+                        }
+
                         return (    
                           <div>
                             <Droppable_white key={tile} id={tile}>
-                              {parents[counter] === null && tile < 50? draggableCheckers[counter] : null}
+                              {parents[counter] === null && tile < 24? draggableCheckers[counter]: null}
                               {parents.indexOf(tile) > -1 ? draggableCheckers[parents.indexOf(tile)]: ''}
                             </Droppable_white> 
                           </div>  
@@ -214,7 +220,15 @@ export function GridGame({modifiers,}: Props) {
         </div>
     );
 
-    function handleDragStart({ active }: DragStartEvent) {
+    function isValid(toGoPlace : number, currentPlace: number) {
+      if (currentPlace + (8-1) == toGoPlace || currentPlace + (8+1) == toGoPlace) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    function handleDragStart({ active}: DragStartEvent) {
           let newArray = [...isDragging];
           let index = active.id
           var getIndex = Number(index.match(/\d+$/));
@@ -225,10 +239,10 @@ export function GridGame({modifiers,}: Props) {
 
     function handleDragEnd(over: DragEndEvent) {
       for (var i = 0; i < isDragging.length; i++) {
-        if (isDragging[i] == true) {
+        if (isDragging[i] == true && isValid(Number(over.over?.id), Number(parents[i]))) {
           let newArrayParent = [...parents];
           let newArrayDragging = [...isDragging];
-          
+
           newArrayParent[i] = (over ? over.over?.id : null as any);
           setParent(newArrayParent);
           
