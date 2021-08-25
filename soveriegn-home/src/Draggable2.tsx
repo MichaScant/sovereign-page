@@ -46,7 +46,7 @@ interface Props {
   identity? : number;
 }
 
-export const Draggable2 = forwardRef<HTMLButtonElement, Props>(
+export const Draggable2 = forwardRef<HTMLDivElement, Props>(
   function Draggable(
     {
       axis,
@@ -78,18 +78,17 @@ export const Draggable2 = forwardRef<HTMLButtonElement, Props>(
           } as React.CSSProperties
         }
       >
-        <button
+        <div
           ref={ref}
           {...props}
           aria-label="Draggable"
-          data-cypress={"draggable-item" + identity}
+          data-cypress={"draggable-itemB" + identity}
           {...(handle ? {} : listeners)}
           tabIndex={handle ? -1 : undefined}
-        
-        >
-          
-          Drag2
-        </button>
+          className = "square_black"
+        > 
+          Drag
+        </div>
         {label ? <label>{label}</label> : null}
       </div>
     );

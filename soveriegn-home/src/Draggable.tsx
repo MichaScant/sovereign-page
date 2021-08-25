@@ -2,8 +2,6 @@ import type {DraggableSyntheticListeners, Translate, UniqueIdentifier} from '@dn
 import React, {forwardRef, useState} from 'react';
 import classNames from 'classnames';
 import styles from './Draggable.module.css';
-import { useDerivedTransform } from '@dnd-kit/core/dist/components/DragOverlay/hooks';
-import { Dimensions, TouchableHighlight, Text } from 'react-native';
  
 /*
 export function Draggable(props: any) {
@@ -49,13 +47,6 @@ interface Props {
 
 }
 
-export function Properties(p : any, isDrag : any) {
-  const [parent, setParent] = useState<UniqueIdentifier | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  setParent(p);
-  setIsDragging(isDrag);
-}
-
 export const Draggable = forwardRef<HTMLDivElement, Props>(
   function Draggable(
     {
@@ -72,7 +63,6 @@ export const Draggable = forwardRef<HTMLDivElement, Props>(
     ref
   ) {
 
-    
     return (
       <div
         className={classNames(
@@ -92,7 +82,7 @@ export const Draggable = forwardRef<HTMLDivElement, Props>(
           ref={ref}
           {...props}
           aria-label="Draggable"
-          data-cypress={"draggable-item" + identity}
+          data-cypress={"draggable-itemR" + identity}
           {...(handle ? {} : listeners)}
           tabIndex={handle ? -1 : undefined}
           className = "square_red"
