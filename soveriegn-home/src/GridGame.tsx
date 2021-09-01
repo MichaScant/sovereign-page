@@ -85,13 +85,85 @@ function DraggableItem2({handle, identifier}: DraggableProps) {
   );
 }
 
+function isCaptureValid(toGoPlace : number, currentPlace: number, id : String, redCircles: String[], blackCircles : String[], isKing : boolean) {
+  if (currentPlace == toGoPlace) {
+    return true;
+  }
+  
+  if (redCircles.includes(String(currentPlace)) || blackCircles.includes(String(currentPlace))) {
+    return false;
+  } 
+
+  if (isKing) {
+    if (id === "black" && redCircles.includes(String(currentPlace - (8+1)))) {
+      let result = isCaptureValid(toGoPlace, currentPlace - 2*(8+1), id, redCircles, blackCircles, isKing);
+      if (result) {
+        return true;
+      }
+    } if (id === "black" && (redCircles.includes(String(currentPlace - (8-1))))) {
+      let result = isCaptureValid(toGoPlace, currentPlace - 2*(8-1), id, redCircles, blackCircles, isKing);
+      if (result) {
+        return true;
+      }
+    }
+    
+    if (id === "red" &&  blackCircles.includes(String(currentPlace + (8+1)))) {
+      let result = isCaptureValid(toGoPlace, currentPlace + 2*(8+1), id, redCircles, blackCircles, isKing);
+      if (result) {
+        return true;
+      }
+    }
+
+    if (id === "red" && (blackCircles.includes(String(currentPlace + (8-1))))) {
+      let result = isCaptureValid(toGoPlace, currentPlace + 2*(8-1), id, redCircles, blackCircles, isKing);
+      if (result) {
+        return true;
+      }
+    }
+  }
+
+  if (id === "black" && (redCircles.includes(String(currentPlace + (8-1))))) {
+    let result = isCaptureValid(toGoPlace, currentPlace + 2*(8-1), id, redCircles, blackCircles, isKing);
+    if (result) {
+      return true;
+    }
+  } 
+  
+  if (id === "black" && redCircles.includes(String(currentPlace + (8+1)))) {
+    let result = isCaptureValid(toGoPlace, currentPlace + 2*(8+1), id, redCircles, blackCircles, isKing);
+    if (result) {
+      return true;
+    }
+  } 
+  
+  if (id === "red" && (blackCircles.includes(String(toGoPlace - (8-1))))) {
+    let result = isCaptureValid(toGoPlace, currentPlace - 2*(8-1), id, redCircles, blackCircles, isKing);
+    if (result) {
+      return true;
+    }
+  } 
+  
+  if (id ==="red" && blackCircles.includes(String(toGoPlace - (8+1)))) {
+    let result = isCaptureValid(toGoPlace, currentPlace - 2*(8+1), id, redCircles, blackCircles, isKing);
+    if (result) {
+      return true;
+    }
+  } else {
+    return false;
+  }
+}
+
 function isValid(toGoPlace : number, currentPlace: number, id : String, redCircles: String[], blackCircles : String[], isKing : boolean) {
+  //checks if any pieces exist on the square the player wants to move to
   if (redCircles.includes(String(toGoPlace)) || blackCircles.includes(String(toGoPlace))) {
     return false;
   } 
+
   if (isKing) {
+      //checks if a diagonal move is valid for a king piece
       if ((currentPlace - (8-1) == toGoPlace || currentPlace - (8+1) == toGoPlace || currentPlace + (8-1) == toGoPlace || currentPlace + (8+1) == toGoPlace)) {
         return true;
+        //checks if move is valid for taking pieces for kings
       } else if (id === "black" && (redCircles.includes(String(toGoPlace - (8-1))) || redCircles.includes(String(toGoPlace - (8+1))))) {
         return true
       } else if (id === "red" && (blackCircles.includes(String(toGoPlace + (8-1))) || blackCircles.includes(String(toGoPlace + (8+1))))) {
@@ -99,12 +171,16 @@ function isValid(toGoPlace : number, currentPlace: number, id : String, redCircl
       }
   } 
   
+  //checks if move is valid for taking pieces
   if ((currentPlace + (8-1) == toGoPlace || currentPlace + (8+1) == toGoPlace) && id === "red") {
     return true;
+    //checks if move is valid for taking pieces
   } else if ((currentPlace - (8-1) == toGoPlace || currentPlace - (8+1) == toGoPlace) && id === "black") { 
     return true;
+    //checks if move is valid for taking pieces
   } else if (id === "black" && (redCircles.includes(String(toGoPlace + (8-1))) || redCircles.includes(String(toGoPlace + (8+1))))) {
     return true;
+    //checks if move is valid for taking pieces
   } else if (id === "red" && (blackCircles.includes(String(toGoPlace - (8-1))) || blackCircles.includes(String(toGoPlace - (8+1))))) {
     return true;
   } else {
