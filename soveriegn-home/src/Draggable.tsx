@@ -1,32 +1,5 @@
-import type {DraggableSyntheticListeners, Translate, UniqueIdentifier} from '@dnd-kit/core';
-import React, {forwardRef, useState} from 'react';
-import classNames from 'classnames';
-import styles from './Draggable.module.css';
- 
-/*
-export function Draggable(props: any) {
-  const {attributes, listeners, setNodeRef, transform} = useDraggable({
-    id: props.id,
-  });
-  const style = transform ? {
-    transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-  } : undefined;
-
-  return (
-    <button 
-    ref={setNodeRef} 
-    style={style} 
-    {...listeners} 
-    {...attributes} 
-    className="button"
-    aria-label="Draggable"
-    data-cypress="draggable-item"
-    >
-      {props.children}
-    </button>
-  );
-}
-*/
+import type {DraggableSyntheticListeners, Translate} from '@dnd-kit/core';
+import React, {forwardRef} from 'react';
 
 export enum Axis {
   All,
@@ -65,12 +38,6 @@ export const Draggable = forwardRef<HTMLDivElement, Props>(
 
     return (
       <div
-        className={classNames(
-          styles.Draggable,
-          dragOverlay && styles.dragOverlay,
-          dragging && styles.dragging,
-          handle && styles.handle
-        )}
         style={
           {
             '--translate-x': `${translate?.x ?? 0}px`,

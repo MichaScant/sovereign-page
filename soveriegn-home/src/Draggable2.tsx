@@ -65,12 +65,6 @@ export const Draggable2 = forwardRef<HTMLDivElement, Props>(
     var id = "draggable-item";
     return (
       <div
-        className={classNames(
-          styles.Draggable,
-          dragOverlay && styles.dragOverlay,
-          dragging && styles.dragging,
-          handle && styles.handle
-        )}
         style={
           {
             '--translate-x': `${translate?.x ?? 0}px`,

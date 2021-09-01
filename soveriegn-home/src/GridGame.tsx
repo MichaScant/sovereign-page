@@ -22,6 +22,9 @@ interface Props {
   grid?: string[][];
 }
 
+var isTurnRed = true;
+var isTurnBlack = false;
+
 function buildGrid() {
   var grid: string[][] = [];
   var element = 1;
@@ -82,16 +85,27 @@ function DraggableItem2({handle, identifier}: DraggableProps) {
   );
 }
 
-function isValid(toGoPlace : number, currentPlace: number, id : String, redCircles: String[], blackCircles : String[]) {
+function isValid(toGoPlace : number, currentPlace: number, id : String, redCircles: String[], blackCircles : String[], isKing : boolean) {
   if (redCircles.includes(String(toGoPlace)) || blackCircles.includes(String(toGoPlace))) {
     return false;
-  } else if ((currentPlace + (8-1) == toGoPlace || currentPlace + (8+1) == toGoPlace) && id === "red") {
+  } 
+  if (isKing) {
+      if ((currentPlace - (8-1) == toGoPlace || currentPlace - (8+1) == toGoPlace || currentPlace + (8-1) == toGoPlace || currentPlace + (8+1) == toGoPlace)) {
+        return true;
+      } else if (id === "black" && (redCircles.includes(String(toGoPlace - (8-1))) || redCircles.includes(String(toGoPlace - (8+1))))) {
+        return true
+      } else if (id === "red" && (blackCircles.includes(String(toGoPlace + (8-1))) || blackCircles.includes(String(toGoPlace + (8+1))))) {
+        return true;
+      }
+  } 
+  
+  if ((currentPlace + (8-1) == toGoPlace || currentPlace + (8+1) == toGoPlace) && id === "red") {
     return true;
   } else if ((currentPlace - (8-1) == toGoPlace || currentPlace - (8+1) == toGoPlace) && id === "black") { 
     return true;
-  } else if (id === "black" && (redCircles.includes(String(toGoPlace - (8-1))) || redCircles.includes(String(toGoPlace - (8+1))))) {
+  } else if (id === "black" && (redCircles.includes(String(toGoPlace + (8-1))) || redCircles.includes(String(toGoPlace + (8+1))))) {
     return true;
-  } else if (id === "red" && (blackCircles.includes(String(toGoPlace + (8-1))) || blackCircles.includes(String(toGoPlace + (8+1))))) {
+  } else if (id === "red" && (blackCircles.includes(String(toGoPlace - (8-1))) || blackCircles.includes(String(toGoPlace - (8+1))))) {
     return true;
   } else {
     return false;
@@ -105,7 +119,8 @@ export function GridGame({modifiers,}: Props) {
     const [parent2, setParent2] = useState<UniqueIdentifier[]>(Array(12).fill(null));
     const [isDragging, setIsDragging] = useState<boolean[]>(Array(12).fill(false));
     const [isDragging2, setIsDragging2] = useState<boolean[]>(Array(12).fill(false));
-
+    const [isKing, setIsKing] = useState<boolean[]>(Array(12).fill(false))
+    const [isKing2, setIsKing2] = useState<boolean[]>(Array(12).fill(false))
 
     const draggableCheckersR : any[] = [];
   
@@ -183,40 +198,72 @@ export function GridGame({modifiers,}: Props) {
           <div className = "grid">
             
             {gridSquares}
-            
-             {/*draggable*/}
-            {/*<DragMain/>*/}
+          
             </div>
               <DragOverlay>
                   {isDragging2.includes(true) ? <Draggable2 dragging dragOverlay /> : null}
-                  {isDragging.includes(true) ? <Draggable dragging dragOverlay /> : null}
+                  {isDragging.includes(true) ?  <Draggable dragging dragOverlay /> : null}
               </DragOverlay>
         </DndContext> 
         </div>
     );
 
-    function handleDragStart({ active}: DragStartEvent) {
-          if (active.id.includes("draggable-itemR")){
+    function handleDragStart({ active}: DragStartEvent  ) {
+          if (active.id.includes("draggable-itemR") && isTurnRed){
             let newArray = [...isDragging];
             let index = active.id
             var getIndex = Number(index.match(/\d+$/));
             newArray[getIndex] = true;
             setIsDragging(newArray);
-          } else {
+            isTurnRed = false;
+            isTurnBlack = true;
+          } else if (active.id.includes("draggable-itemB") && isTurnBlack) {
             let newArray = [...isDragging2];
             let index = active.id
             var getIndex = Number(index.match(/\d+$/));
             newArray[getIndex] = true;
             setIsDragging2(newArray);
+            isTurnRed = true;
+            isTurnBlack = false;
           }
     }
 
     function handleDragEnd(over: DragEndEvent) {
       for (var i = 0; i < isDragging.length; i++) {
         if (isDragging[i] == true) {
-          if (isValid(Number(over.over?.id), Number(parents[i]), "red", parents, parent2)){
+          if (isValid(Number(over.over?.id), Number(parents[i]), "red", parents, parent2, isKing[i])){
             let newArrayParent = [...parents];
             let newArrayDragging = [...isDragging];
+            
+            if ((isKing[i] === true) && (parent2.includes(String(Number(over.over?.id) - (9))) && parent2.includes(String(Number(parent2[i]) + (9)))) && String(Number(over.over?.id) - (9)) == String(Number(parent2[i]) + 9)) {
+              let newArrayParent = [...parents];
+              delete newArrayParent[parents.indexOf(String(Number(over.over?.id) - (8+1)))];
+              setParent(newArrayParent);
+            }
+
+            if ((isKing[i] === true) && (parent2.includes(String(Number(over.over?.id) - (7))) && parent2.includes(String(Number(parents[i]) + (7)))) && String(Number(over.over?.id) - 7) == String(Number(parent2[i]) + 7)) {
+              let newArrayParent = [...parents];
+              delete newArrayParent[parents.indexOf(String(Number(over.over?.id) - (8-1)))];
+              setParent(newArrayParent);
+            }
+
+            if (parent2.includes(String(Number(over.over?.id) - (8+1))) && parent2.includes(String(Number(parents[i]) + (9))) && String(Number(over.over?.id) - 9) == String(Number(parent2[i]) + 9)) {
+              let newArrayParent2 = [...parent2];
+              delete newArrayParent2[parent2.indexOf(String(Number(over.over?.id) - (8+1)))];
+              setParent2(newArrayParent2);
+            }
+
+            if (parent2.includes(String(Number(over.over?.id) - (8-1))) && parent2.includes(String(Number(parents[i]) + (7))) && String(Number(over.over?.id) - 7) == String(Number(parent2[i]) + 7)) {
+              let newArrayParent2 = [...parent2];
+              delete newArrayParent2[parent2.indexOf(String(Number(over.over?.id) - (8-1)))];
+              setParent2(newArrayParent2);
+            }
+
+            if (Number(parents[i])> 56) {
+              let newIsKing = [...isKing];
+              newIsKing[i] = true;
+              setIsKing(newIsKing);
+            }
 
             newArrayParent[i] = (over ? over.over?.id : null as any);
             setParent(newArrayParent);
@@ -228,21 +275,61 @@ export function GridGame({modifiers,}: Props) {
             let newArrayDragging = [...isDragging];
             newArrayDragging[i] = false;
             setIsDragging(newArrayDragging);
+            isTurnRed = true;
+            isTurnBlack = false;
           }
         } 
       }
 
       for (var i = 0; i < isDragging2.length; i++) {
-        if (isDragging2[i] == true && isValid(Number(over.over?.id), Number(parent2[i]), "black", parents, parent2)) {
-          let newArrayParent = [...parent2];
-          let newArrayDragging = [...isDragging2];
+        if (isDragging2[i] == true) {
+          if (isValid(Number(over.over?.id), Number(parent2[i]), "black", parents, parent2, isKing2[i])) {
+            let newArrayParent = [...parent2];
+            let newArrayDragging = [...isDragging2];
+                        
+            if ((isKing2[i] === true) && (parents.includes(String(Number(over.over?.id) - (9))) && parents.includes(String(Number(parent2[i]) + (9)))) && String(Number(over.over?.id) - (9)) == String(Number(parent2[i]) + 9)) {
+              let newArrayParent = [...parents];
+              delete newArrayParent[parents.indexOf(String(Number(over.over?.id) - (8+1)))];
+              setParent(newArrayParent);
+            }
 
-          newArrayParent[i] = (over ? over.over?.id : null as any);
-          setParent2(newArrayParent);
-          
-          newArrayDragging[i] = false;
-          setIsDragging2(newArrayDragging);
-          break;
+            if ((isKing2[i] === true) && (parents.includes(String(Number(over.over?.id) - (7))) && parents.includes(String(Number(parents[i]) + (7)))) && String(Number(over.over?.id) - 7) == String(Number(parent2[i]) + 7)) {
+              let newArrayParent = [...parents];
+              delete newArrayParent[parents.indexOf(String(Number(over.over?.id) - (8-1)))];
+              setParent(newArrayParent);
+            }
+            
+            if ((parents.includes(String(Number(over.over?.id) + (8+1)))) && parents.includes(String(Number(parent2[i]) - 9)) && String(Number(over.over?.id) + (8+1)) == String(Number(parent2[i]) - 9)) {
+              let newArrayParent2 = [...parents];
+              delete newArrayParent2[parents.indexOf(String(Number(over.over?.id) + (8+1)))];
+              setParent(newArrayParent2);
+            }
+
+            if (parents.includes(String(Number(over.over?.id) + (8-1))) && parents.includes(String(Number(parent2[i]) - 7)) && String(Number(over.over?.id) + (8-1)) == String(Number(parent2[i]) - 7)) {
+              let newArrayParent2 = [...parents];
+              delete newArrayParent2[parents.indexOf(String(Number(over.over?.id) + (8-1)))];
+              setParent(newArrayParent2);
+            }
+
+            if (Number(over.over?.id) <= 8) {
+              let newIsKing = [...isKing2];
+              newIsKing[i] = true;
+              setIsKing2(newIsKing);
+            }
+
+            newArrayParent[i] = (over ? over.over?.id : null as any);
+            setParent2(newArrayParent);
+            
+            newArrayDragging[i] = false;
+            setIsDragging2(newArrayDragging);
+            break;
+          } else {
+            let newArrayDragging = [...isDragging2];
+            newArrayDragging[i] = false;
+            setIsDragging2(newArrayDragging);
+            isTurnRed = false;
+            isTurnBlack = true;
+          }
         }
       }
     }
@@ -254,12 +341,16 @@ export function GridGame({modifiers,}: Props) {
         var getIndex = Number(index.match(/\d+$/));
         newArray[getIndex] = false;
         setIsDragging(newArray);
+        isTurnRed = true;
+        isTurnBlack = false;
       } else {
         let newArray = [...isDragging2];
         let index = event.active.id
         var getIndex = Number(index.match(/\d+$/));
         newArray[getIndex] = false;
         setIsDragging2(newArray);
+        isTurnRed = false;
+        isTurnBlack = true;
       }
     }
     
