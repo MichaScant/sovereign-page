@@ -85,71 +85,87 @@ function DraggableItem2({handle, identifier}: DraggableProps) {
   );
 }
 
-function isCaptureValid(toGoPlace : number, currentPlace: number, id : String, redCircles: String[], blackCircles : String[], isKing : boolean) {
-  if (currentPlace == toGoPlace) {
-    return true;
-  }
+function isCaptureValid(toGoPlace : number, currentPlace: number, id : String, redCircles: String[], blackCircles : String[], isKing : boolean, tilesChecked: number[], tilesTaken: number[]) {
   
-  if (redCircles.includes(String(currentPlace)) || blackCircles.includes(String(currentPlace))) {
-    return false;
+  if (currentPlace == toGoPlace) {
+    return tilesTaken;
+  }
+
+  if ((redCircles.includes(String(currentPlace)) && id === "black") || (blackCircles.includes(String(currentPlace))) && id === "red") {
+    return undefined;
   } 
 
+  if (!((currentPlace % 2 == 0 && toGoPlace % 2 == 0) || (currentPlace % 2 != 0 && toGoPlace % 2 != 0))) {
+    return undefined;
+  }
+
+  tilesChecked.push(currentPlace);
+
   if (isKing) {
-    if (id === "black" && redCircles.includes(String(currentPlace - (8+1)))) {
-      let result = isCaptureValid(toGoPlace, currentPlace - 2*(8+1), id, redCircles, blackCircles, isKing);
-      if (result) {
-        return true;
+    if (id === "black" && redCircles.includes(String(currentPlace + (8+1))) && (currentPlace + (8+1) > 8 && currentPlace + (8+1)) < 56 && (currentPlace + (8+1)) % 8 > 2 && (currentPlace + (8+1)) % 8 < 7 && tilesChecked.findIndex((tile: number) => tile === currentPlace + 2*(8+1)) == -1) {
+      let result = isCaptureValid(toGoPlace, currentPlace + 2*(8+1), id, redCircles, blackCircles, isKing, tilesChecked, tilesTaken);
+      if (result != undefined) {
+        tilesTaken.push(currentPlace + (8+1));
+        return tilesTaken;
       }
-    } if (id === "black" && (redCircles.includes(String(currentPlace - (8-1))))) {
-      let result = isCaptureValid(toGoPlace, currentPlace - 2*(8-1), id, redCircles, blackCircles, isKing);
-      if (result) {
-        return true;
+    } if (id === "black" && (redCircles.includes(String(currentPlace + (8-1)))) && (currentPlace + (8-1) > 8 && currentPlace + (8-1)) < 56 && (currentPlace + (8-1)) % 8 > 2 && (currentPlace + (8-1)) % 8 < 7 && tilesChecked.findIndex((tile: number) => tile === currentPlace + 2*(8-1)) == -1) {
+      let result = isCaptureValid(toGoPlace, currentPlace + 2*(8-1), id, redCircles, blackCircles, isKing, tilesChecked, tilesTaken);
+      if (result != undefined) {
+        tilesTaken.push(currentPlace + (8-1));
+        return tilesTaken;
       }
     }
     
-    if (id === "red" &&  blackCircles.includes(String(currentPlace + (8+1)))) {
-      let result = isCaptureValid(toGoPlace, currentPlace + 2*(8+1), id, redCircles, blackCircles, isKing);
-      if (result) {
-        return true;
+    if (id === "red" &&  blackCircles.includes(String(currentPlace - (8+1))) && (currentPlace - (8+1) > 8 && currentPlace - (8+1)) < 56 && (currentPlace - (8+1)) % 8 > 2 && (currentPlace - (8+1)) % 8 < 7 && tilesChecked.findIndex((tile: number) => tile === currentPlace - 2*(8+1)) == -1) {
+      let result = isCaptureValid(toGoPlace, currentPlace - 2*(8+1), id, redCircles, blackCircles, isKing, tilesChecked, tilesTaken);
+      if (result != undefined) {
+        tilesTaken.push(currentPlace - (8+1));
+        return tilesTaken;
       }
     }
 
-    if (id === "red" && (blackCircles.includes(String(currentPlace + (8-1))))) {
-      let result = isCaptureValid(toGoPlace, currentPlace + 2*(8-1), id, redCircles, blackCircles, isKing);
-      if (result) {
-        return true;
+    if (id === "red" && (blackCircles.includes(String(currentPlace - (8-1)))) && (currentPlace - (8-1) > 8 && currentPlace - (8-1)) < 56 && (currentPlace - (8-1)) % 8 > 2 && (currentPlace - (8-1)) % 8 < 7 && tilesChecked.findIndex((tile: number) => tile === currentPlace - 2*(8-1)) == -1) {
+      let result = isCaptureValid(toGoPlace, currentPlace -  2*(8-1), id, redCircles, blackCircles, isKing, tilesChecked, tilesTaken);
+      if (result != undefined) {
+        tilesTaken.push(currentPlace - (8-1));
+        return tilesTaken;
       }
     }
   }
 
-  if (id === "black" && (redCircles.includes(String(currentPlace + (8-1))))) {
-    let result = isCaptureValid(toGoPlace, currentPlace + 2*(8-1), id, redCircles, blackCircles, isKing);
-    if (result) {
-      return true;
+  if (id === "black" && (redCircles.includes(String(currentPlace - (8-1)))) && (currentPlace - (8-1) > 8 && currentPlace - (8-1)) < 56 && (currentPlace - (8-1)) % 8 > 2 && (currentPlace - (8-1)) % 8 < 7 && tilesChecked.findIndex((tile: number) => tile === currentPlace - 2*(8-1)) == -1) {
+    let result = isCaptureValid(toGoPlace, currentPlace - 2*(8-1), id, redCircles, blackCircles, isKing, tilesChecked, tilesTaken);
+    if (result != undefined) {
+      tilesTaken.push(currentPlace - (8-1));
+      return tilesTaken;
     }
   } 
   
-  if (id === "black" && redCircles.includes(String(currentPlace + (8+1)))) {
-    let result = isCaptureValid(toGoPlace, currentPlace + 2*(8+1), id, redCircles, blackCircles, isKing);
-    if (result) {
-      return true;
+  if (id === "black" && redCircles.includes(String(currentPlace - (8+1))) && (currentPlace - (8+1) > 8 && currentPlace - (8+1)) < 56 && (currentPlace - (8+1)) % 8 > 2 && (currentPlace - (8+1)) % 8 < 7 && tilesChecked.findIndex((tile: number) => tile === currentPlace - 2*(8+1)) == -1) {
+    let result = isCaptureValid(toGoPlace, currentPlace - 2*(8+1), id, redCircles, blackCircles, isKing, tilesChecked, tilesTaken);
+    if (result != undefined) {
+      tilesTaken.push(currentPlace - (8+1));
+      return tilesTaken;
     }
   } 
   
-  if (id === "red" && (blackCircles.includes(String(toGoPlace - (8-1))))) {
-    let result = isCaptureValid(toGoPlace, currentPlace - 2*(8-1), id, redCircles, blackCircles, isKing);
-    if (result) {
-      return true;
+  if (id === "red" && (blackCircles.includes(String(currentPlace + (8-1)))) && (currentPlace + (8-1) > 8 && currentPlace + (8-1)) < 56 && (currentPlace + (8-1)) % 8 > 2 && (currentPlace + (8-1)) % 8 < 7 && tilesChecked.findIndex((tile: number) => tile === currentPlace + 2*(8-1)) == -1) {
+    let result = isCaptureValid(toGoPlace, currentPlace + 2*(8-1), id, redCircles, blackCircles, isKing, tilesChecked, tilesTaken);
+    if (result != undefined) {
+      tilesTaken.push(currentPlace + (8-1));
+      return tilesTaken;
     }
   } 
   
-  if (id ==="red" && blackCircles.includes(String(toGoPlace - (8+1)))) {
-    let result = isCaptureValid(toGoPlace, currentPlace - 2*(8+1), id, redCircles, blackCircles, isKing);
-    if (result) {
-      return true;
+  let test = (currentPlace + (8+1)) % 8;
+  if (id ==="red" && blackCircles.includes(String(currentPlace + (8+1))) && (currentPlace + (8+1) > 8 && currentPlace + (8+1)) < 56 && (currentPlace + (8+1)) % 8 > 2 && (currentPlace + (8+1)) % 8 < 7 && tilesChecked.findIndex((tile: number) => tile === currentPlace + 2*(8+1)) == -1) {
+    let result = isCaptureValid(toGoPlace, currentPlace + 2*(8+1), id, redCircles, blackCircles, isKing, tilesChecked, tilesTaken);
+    if (result != undefined) {
+      tilesTaken.push(currentPlace + (8+1));
+      return tilesTaken;
     }
   } else {
-    return false;
+    return undefined;
   }
 }
 
@@ -163,29 +179,20 @@ function isValid(toGoPlace : number, currentPlace: number, id : String, redCircl
       //checks if a diagonal move is valid for a king piece
       if ((currentPlace - (8-1) == toGoPlace || currentPlace - (8+1) == toGoPlace || currentPlace + (8-1) == toGoPlace || currentPlace + (8+1) == toGoPlace)) {
         return true;
-        //checks if move is valid for taking pieces for kings
-      } else if (id === "black" && (redCircles.includes(String(toGoPlace - (8-1))) || redCircles.includes(String(toGoPlace - (8+1))))) {
-        return true
-      } else if (id === "red" && (blackCircles.includes(String(toGoPlace + (8-1))) || blackCircles.includes(String(toGoPlace + (8+1))))) {
-        return true;
       }
   } 
   
-  //checks if move is valid for taking pieces
+  //checks if move is valid 
   if ((currentPlace + (8-1) == toGoPlace || currentPlace + (8+1) == toGoPlace) && id === "red") {
     return true;
-    //checks if move is valid for taking pieces
+    //checks if move is valid
   } else if ((currentPlace - (8-1) == toGoPlace || currentPlace - (8+1) == toGoPlace) && id === "black") { 
     return true;
     //checks if move is valid for taking pieces
-  } else if (id === "black" && (redCircles.includes(String(toGoPlace + (8-1))) || redCircles.includes(String(toGoPlace + (8+1))))) {
-    return true;
-    //checks if move is valid for taking pieces
-  } else if (id === "red" && (blackCircles.includes(String(toGoPlace - (8-1))) || blackCircles.includes(String(toGoPlace - (8+1))))) {
-    return true;
-  } else {
-    return false;
-  }
+  } 
+  let tilesChecked: number[] = [];
+  let tilesTaken: number[] = [];
+  return isCaptureValid(toGoPlace, currentPlace, id, redCircles, blackCircles, isKing, tilesChecked, tilesTaken)
 }
 
 export function GridGame({modifiers,}: Props) {
@@ -303,35 +310,20 @@ export function GridGame({modifiers,}: Props) {
             isTurnBlack = false;
           }
     }
-
     function handleDragEnd(over: DragEndEvent) {
       for (var i = 0; i < isDragging.length; i++) {
         if (isDragging[i] == true) {
-          if (isValid(Number(over.over?.id), Number(parents[i]), "red", parents, parent2, isKing[i])){
+          let result = isValid(Number(over.over?.id), Number(parents[i]), "red", parents, parent2, isKing[i]);
+          if (result != undefined){
             let newArrayParent = [...parents];
             let newArrayDragging = [...isDragging];
             
-            if ((isKing[i] === true) && (parent2.includes(String(Number(over.over?.id) - (9))) && parent2.includes(String(Number(parent2[i]) + (9)))) && String(Number(over.over?.id) - (9)) == String(Number(parent2[i]) + 9)) {
-              let newArrayParent = [...parents];
-              delete newArrayParent[parents.indexOf(String(Number(over.over?.id) - (8+1)))];
-              setParent(newArrayParent);
-            }
-
-            if ((isKing[i] === true) && (parent2.includes(String(Number(over.over?.id) - (7))) && parent2.includes(String(Number(parents[i]) + (7)))) && String(Number(over.over?.id) - 7) == String(Number(parent2[i]) + 7)) {
-              let newArrayParent = [...parents];
-              delete newArrayParent[parents.indexOf(String(Number(over.over?.id) - (8-1)))];
-              setParent(newArrayParent);
-            }
-
-            if (parent2.includes(String(Number(over.over?.id) - (8+1))) && parent2.includes(String(Number(parents[i]) + (9))) && String(Number(over.over?.id) - 9) == String(Number(parent2[i]) + 9)) {
+            if (Array.isArray(result)) {
+              let result2 = [...result]
               let newArrayParent2 = [...parent2];
-              delete newArrayParent2[parent2.indexOf(String(Number(over.over?.id) - (8+1)))];
-              setParent2(newArrayParent2);
-            }
-
-            if (parent2.includes(String(Number(over.over?.id) - (8-1))) && parent2.includes(String(Number(parents[i]) + (7))) && String(Number(over.over?.id) - 7) == String(Number(parent2[i]) + 7)) {
-              let newArrayParent2 = [...parent2];
-              delete newArrayParent2[parent2.indexOf(String(Number(over.over?.id) - (8-1)))];
+              newArrayParent2 = newArrayParent2.filter(function(val) {
+                return result2.indexOf(Number(val)) < 0; 
+              });
               setParent2(newArrayParent2);
             }
 
@@ -359,34 +351,19 @@ export function GridGame({modifiers,}: Props) {
 
       for (var i = 0; i < isDragging2.length; i++) {
         if (isDragging2[i] == true) {
-          if (isValid(Number(over.over?.id), Number(parent2[i]), "black", parents, parent2, isKing2[i])) {
+          let result = isValid(Number(over.over?.id), Number(parent2[i]), "black", parents, parent2, isKing2[i])
+          if (result != undefined) {
             let newArrayParent = [...parent2];
             let newArrayDragging = [...isDragging2];
                         
-            if ((isKing2[i] === true) && (parents.includes(String(Number(over.over?.id) - (9))) && parents.includes(String(Number(parent2[i]) + (9)))) && String(Number(over.over?.id) - (9)) == String(Number(parent2[i]) + 9)) {
-              let newArrayParent = [...parents];
-              delete newArrayParent[parents.indexOf(String(Number(over.over?.id) - (8+1)))];
-              setParent(newArrayParent);
-            }
-
-            if ((isKing2[i] === true) && (parents.includes(String(Number(over.over?.id) - (7))) && parents.includes(String(Number(parents[i]) + (7)))) && String(Number(over.over?.id) - 7) == String(Number(parent2[i]) + 7)) {
-              let newArrayParent = [...parents];
-              delete newArrayParent[parents.indexOf(String(Number(over.over?.id) - (8-1)))];
-              setParent(newArrayParent);
-            }
-            
-            if ((parents.includes(String(Number(over.over?.id) + (8+1)))) && parents.includes(String(Number(parent2[i]) - 9)) && String(Number(over.over?.id) + (8+1)) == String(Number(parent2[i]) - 9)) {
+            if (Array.isArray(result)) {
+              let result2 = [...result]
               let newArrayParent2 = [...parents];
-              delete newArrayParent2[parents.indexOf(String(Number(over.over?.id) + (8+1)))];
+              newArrayParent2 = newArrayParent2.filter(function(val) {
+                return result2.indexOf(Number(val)) < 0; 
+              });
               setParent(newArrayParent2);
             }
-
-            if (parents.includes(String(Number(over.over?.id) + (8-1))) && parents.includes(String(Number(parent2[i]) - 7)) && String(Number(over.over?.id) + (8-1)) == String(Number(parent2[i]) - 7)) {
-              let newArrayParent2 = [...parents];
-              delete newArrayParent2[parents.indexOf(String(Number(over.over?.id) + (8-1)))];
-              setParent(newArrayParent2);
-            }
-
             if (Number(over.over?.id) <= 8) {
               let newIsKing = [...isKing2];
               newIsKing[i] = true;
