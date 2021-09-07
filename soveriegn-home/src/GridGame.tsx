@@ -101,14 +101,14 @@ function isCaptureValid(toGoPlace : number, currentPlace: number, id : String, r
 
   tilesChecked.push(currentPlace);
 
-  if (isKing) {
-    if (id === "black" && redCircles.includes(String(currentPlace + (8+1))) && (currentPlace + (8+1) > 8 && currentPlace + (8+1)) < 56 && (currentPlace + (8+1)) % 8 > 2 && (currentPlace + (8+1)) % 8 < 7 && tilesChecked.findIndex((tile: number) => tile === currentPlace + 2*(8+1)) == -1) {
+    if (isKing) {
+    if (id === "black" && redCircles.includes(String(currentPlace + (8+1))) && (currentPlace + (8+1) > 8 && currentPlace + (8+1)) < 56 && (currentPlace + (8+1)) % 8 > 1 && tilesChecked.findIndex((tile: number) => tile === currentPlace + 2*(8+1)) == -1) {
       let result = isCaptureValid(toGoPlace, currentPlace + 2*(8+1), id, redCircles, blackCircles, isKing, tilesChecked, tilesTaken);
       if (result != undefined) {
         tilesTaken.push(currentPlace + (8+1));
         return tilesTaken;
       }
-    } if (id === "black" && (redCircles.includes(String(currentPlace + (8-1)))) && (currentPlace + (8-1) > 8 && currentPlace + (8-1)) < 56 && (currentPlace + (8-1)) % 8 > 2 && (currentPlace + (8-1)) % 8 < 7 && tilesChecked.findIndex((tile: number) => tile === currentPlace + 2*(8-1)) == -1) {
+    } if (id === "black" && (redCircles.includes(String(currentPlace + (8-1)))) && (currentPlace + (8-1) > 8 && currentPlace + (8-1)) < 56 && (currentPlace + (8-1)) % 8 > 1  && tilesChecked.findIndex((tile: number) => tile === currentPlace + 2*(8-1)) == -1) {
       let result = isCaptureValid(toGoPlace, currentPlace + 2*(8-1), id, redCircles, blackCircles, isKing, tilesChecked, tilesTaken);
       if (result != undefined) {
         tilesTaken.push(currentPlace + (8-1));
@@ -116,7 +116,7 @@ function isCaptureValid(toGoPlace : number, currentPlace: number, id : String, r
       }
     }
     
-    if (id === "red" &&  blackCircles.includes(String(currentPlace - (8+1))) && (currentPlace - (8+1) > 8 && currentPlace - (8+1)) < 56 && (currentPlace - (8+1)) % 8 > 2 && (currentPlace - (8+1)) % 8 < 7 && tilesChecked.findIndex((tile: number) => tile === currentPlace - 2*(8+1)) == -1) {
+    if (id === "red" &&  blackCircles.includes(String(currentPlace - (8+1))) && (currentPlace - (8+1) > 8 && currentPlace - (8+1)) < 56 && (currentPlace - (8+1)) % 8 > 1  && tilesChecked.findIndex((tile: number) => tile === currentPlace - 2*(8+1)) == -1) {
       let result = isCaptureValid(toGoPlace, currentPlace - 2*(8+1), id, redCircles, blackCircles, isKing, tilesChecked, tilesTaken);
       if (result != undefined) {
         tilesTaken.push(currentPlace - (8+1));
@@ -124,7 +124,7 @@ function isCaptureValid(toGoPlace : number, currentPlace: number, id : String, r
       }
     }
 
-    if (id === "red" && (blackCircles.includes(String(currentPlace - (8-1)))) && (currentPlace - (8-1) > 8 && currentPlace - (8-1)) < 56 && (currentPlace - (8-1)) % 8 > 2 && (currentPlace - (8-1)) % 8 < 7 && tilesChecked.findIndex((tile: number) => tile === currentPlace - 2*(8-1)) == -1) {
+    if (id === "red" && (blackCircles.includes(String(currentPlace - (8-1)))) && (currentPlace - (8-1) > 8 && currentPlace - (8-1)) < 56 && (currentPlace - (8-1)) % 8 > 1 && tilesChecked.findIndex((tile: number) => tile === currentPlace - 2*(8-1)) == -1) {
       let result = isCaptureValid(toGoPlace, currentPlace -  2*(8-1), id, redCircles, blackCircles, isKing, tilesChecked, tilesTaken);
       if (result != undefined) {
         tilesTaken.push(currentPlace - (8-1));
@@ -133,7 +133,7 @@ function isCaptureValid(toGoPlace : number, currentPlace: number, id : String, r
     }
   }
 
-  if (id === "black" && (redCircles.includes(String(currentPlace - (8-1)))) && (currentPlace - (8-1) > 8 && currentPlace - (8-1)) < 56 && (currentPlace - (8-1)) % 8 > 2 && (currentPlace - (8-1)) % 8 < 7 && tilesChecked.findIndex((tile: number) => tile === currentPlace - 2*(8-1)) == -1) {
+  if (id === "black" && (redCircles.includes(String(currentPlace - (8-1)))) && (currentPlace - (8-1) > 8 && currentPlace - (8-1)) < 56 && (currentPlace - (8-1)) % 8 > 1  && tilesChecked.findIndex((tile: number) => tile === currentPlace - 2*(8-1)) == -1) {
     let result = isCaptureValid(toGoPlace, currentPlace - 2*(8-1), id, redCircles, blackCircles, isKing, tilesChecked, tilesTaken);
     if (result != undefined) {
       tilesTaken.push(currentPlace - (8-1));
@@ -141,7 +141,7 @@ function isCaptureValid(toGoPlace : number, currentPlace: number, id : String, r
     }
   } 
   
-  if (id === "black" && redCircles.includes(String(currentPlace - (8+1))) && (currentPlace - (8+1) > 8 && currentPlace - (8+1)) < 56 && (currentPlace - (8+1)) % 8 > 2 && (currentPlace - (8+1)) % 8 < 7 && tilesChecked.findIndex((tile: number) => tile === currentPlace - 2*(8+1)) == -1) {
+  if (id === "black" && redCircles.includes(String(currentPlace - (8+1))) && (currentPlace - (8+1) > 8 && currentPlace - (8+1)) < 56 && (currentPlace - (8+1)) % 8 > 1 && tilesChecked.findIndex((tile: number) => tile === currentPlace - 2*(8+1)) == -1) {
     let result = isCaptureValid(toGoPlace, currentPlace - 2*(8+1), id, redCircles, blackCircles, isKing, tilesChecked, tilesTaken);
     if (result != undefined) {
       tilesTaken.push(currentPlace - (8+1));
@@ -149,7 +149,7 @@ function isCaptureValid(toGoPlace : number, currentPlace: number, id : String, r
     }
   } 
   
-  if (id === "red" && (blackCircles.includes(String(currentPlace + (8-1)))) && (currentPlace + (8-1) > 8 && currentPlace + (8-1)) < 56 && (currentPlace + (8-1)) % 8 > 2 && (currentPlace + (8-1)) % 8 < 7 && tilesChecked.findIndex((tile: number) => tile === currentPlace + 2*(8-1)) == -1) {
+  if (id === "red" && (blackCircles.includes(String(currentPlace + (8-1)))) && (currentPlace + (8-1) > 8 && currentPlace + (8-1)) < 56 && (currentPlace + (8-1)) % 8 > 1 && tilesChecked.findIndex((tile: number) => tile === currentPlace + 2*(8-1)) == -1) {
     let result = isCaptureValid(toGoPlace, currentPlace + 2*(8-1), id, redCircles, blackCircles, isKing, tilesChecked, tilesTaken);
     if (result != undefined) {
       tilesTaken.push(currentPlace + (8-1));
@@ -158,7 +158,7 @@ function isCaptureValid(toGoPlace : number, currentPlace: number, id : String, r
   } 
   
   let test = (currentPlace + (8+1)) % 8;
-  if (id ==="red" && blackCircles.includes(String(currentPlace + (8+1))) && (currentPlace + (8+1) > 8 && currentPlace + (8+1)) < 56 && (currentPlace + (8+1)) % 8 > 2 && (currentPlace + (8+1)) % 8 < 7 && tilesChecked.findIndex((tile: number) => tile === currentPlace + 2*(8+1)) == -1) {
+  if (id ==="red" && blackCircles.includes(String(currentPlace + (8+1))) && (currentPlace + (8+1) > 8 && currentPlace + (8+1)) < 56 && (currentPlace + (8+1)) % 8 > 1 && tilesChecked.findIndex((tile: number) => tile === currentPlace + 2*(8+1)) == -1) {
     let result = isCaptureValid(toGoPlace, currentPlace + 2*(8+1), id, redCircles, blackCircles, isKing, tilesChecked, tilesTaken);
     if (result != undefined) {
       tilesTaken.push(currentPlace + (8+1));
@@ -171,6 +171,10 @@ function isCaptureValid(toGoPlace : number, currentPlace: number, id : String, r
 
 function isValid(toGoPlace : number, currentPlace: number, id : String, redCircles: String[], blackCircles : String[], isKing : boolean) {
   //checks if any pieces exist on the square the player wants to move to
+    if (currentPlace == toGoPlace) {
+    return false;
+  }
+  
   if (redCircles.includes(String(toGoPlace)) || blackCircles.includes(String(toGoPlace))) {
     return false;
   } 
@@ -327,7 +331,7 @@ export function GridGame({modifiers,}: Props) {
               setParent2(newArrayParent2);
             }
 
-            if (Number(parents[i])> 56) {
+            if (Number(over.over?.id) > 56) {
               let newIsKing = [...isKing];
               newIsKing[i] = true;
               setIsKing(newIsKing);
@@ -384,6 +388,9 @@ export function GridGame({modifiers,}: Props) {
             isTurnBlack = true;
           }
         }
+      }
+      if (parents.join("") === "" || parent2.join("") === "") {
+        window.location.reload();
       }
     }
 
