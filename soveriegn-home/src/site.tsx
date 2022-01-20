@@ -15,9 +15,10 @@ const site = () => {
 
         <img src = {portrait} className = "michael" style = {{alignSelf: "center"}}/>
 
-        <div id="text-box" className = "intro">To learn more about me (that is if you want to, not to trying to pear pressure you or anything...). Please check out the links below</div>
+        <div id="text-box" className = "intro">Below is the link to the checkers game I coded while learning React and Typescript. I had a lot of fun while coding it and will definitely revist it sometime in the future</div>
 
-        <Link to = "/gamer" className= "gameLink">My Gamer Tag</Link>
+        <Link to = "/game" className= "gameLink">Checkers Game</Link>
+        
         </div>
     );
     
