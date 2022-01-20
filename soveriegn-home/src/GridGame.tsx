@@ -16,7 +16,6 @@ import {Droppable_Green} from './Droppable_green';
 import {Droppable_white} from './Droppable_white';
 import {Draggable2} from './Draggable2';
 import {} from './DraggableProperties';
-import { timeline } from 'console';
 interface Props {
   modifiers?: Modifiers;
   grid?: string[][];
