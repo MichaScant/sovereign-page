@@ -9,9 +9,8 @@ function App() {
 
   return (
     <Switch>
-      <Route exact = {true} path = "/" component={home} />
-      <Route path = "/gamer" component={Gaming} />
       <Route path = "/game" component = {gridGame} />
+      <Route exact path = "" component={home} />
     </Switch>
   );
 }
